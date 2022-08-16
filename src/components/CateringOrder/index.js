@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import {
   Table,
@@ -37,6 +37,7 @@ const Order = (props) => {
   const [date, setDate] = useState(new Date())
   const [delivery, setDelivery] = useState(false)
 
+  useEffect(() => {}, [props.order.length])
   /*
     initial state 
 
@@ -48,7 +49,7 @@ const Order = (props) => {
       should include total and calculate gratuity 
 
     */
-
+  console.log(props)
   return (
     <MenuAccordion
       id='catering-order-form'
@@ -66,6 +67,41 @@ const Order = (props) => {
       </AccordionSummary>
       {/* box is the form portion */}
       <AccordionContent>
+        <TableBox>
+          <OrderTable>
+            <TableHead>
+              <TableRow>
+                <TableCell>Item</TableCell>
+                <TableCell>Variety</TableCell>
+                <TableCell>Quantity</TableCell>
+                <TableCell>Price</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {props.order.length ? (
+                props.order.map((orderItem, idx) => {
+                  return (
+                    <TableRow key={idx}>
+                      {orderItem.size === 'N/A' ? (
+                        <TableCell>{orderItem.name}</TableCell>
+                      ) : (
+                        <TableCell>
+                          {orderItem.size} {orderItem.name}{' '}
+                        </TableCell>
+                      )}
+                      <TableCell>{orderItem.variety}</TableCell>
+                      <TableCell>{orderItem.quantity}</TableCell>
+                    </TableRow>
+                  )
+                })
+              ) : (
+                <TableRow>
+                  <TableCell>Nothing to see yet</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </OrderTable>
+        </TableBox>
         <FormBox noValidate autoComplete='off'>
           <TextInput
             label='Name'
@@ -138,19 +174,6 @@ const Order = (props) => {
 
         */}
         </FormBox>
-        <TableBox>
-          <OrderTable>
-            <TableHead>
-              <TableRow>
-                <TableCell>Item</TableCell>
-                <TableCell>Variety</TableCell>
-                <TableCell>Quantity</TableCell>
-                <TableCell>Price</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody></TableBody>
-          </OrderTable>
-        </TableBox>
       </AccordionContent>
     </MenuAccordion>
   )

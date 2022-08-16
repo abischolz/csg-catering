@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   CounterBox,
   QtyButton,
@@ -6,10 +6,10 @@ import {
   OptionBox,
   SizeGroup,
 } from './styles'
-import { RadioButtonGroup, LengthButton } from '../Modal/HeroModal/styles'
-const Counter = (props) => {
-  console.log('IN COUNTER', props.quantity)
 
+import { LengthButton } from '../Modal/HeroModal/styles'
+
+const Counter = (props) => {
   const onClickAdd = () => {
     const newCount = props.quantity + 1
     props.setQuantity(newCount)
@@ -39,13 +39,13 @@ const Counter = (props) => {
           onChange={handleChange}
           name='size'
         >
-          <LengthButton value='small' aria-label='small'>
+          <LengthButton value='Small' aria-label='small'>
             SMALL
           </LengthButton>
-          <LengthButton value='medium' aria-label='medium'>
+          <LengthButton value='Medium' aria-label='medium'>
             MEDIUM
           </LengthButton>
-          <LengthButton value='large' aria-label='large'>
+          <LengthButton value='Large' aria-label='large'>
             LARGE
           </LengthButton>
         </SizeGroup>

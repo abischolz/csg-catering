@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FormControl, FormLabel, Modal, Box, Stack } from '@mui/material'
 import {
   PlatterBox,
@@ -24,7 +24,13 @@ const PlatterSelect = (props) => {
   const [variety3, setVariety3] = useState('')
   const [variety4, setVariety4] = useState('')
   const [variety5, setVariety5] = useState('')
+  const [quantity, setQuantity] = useState(0)
 
+  const [orderItem, buildOrderItem] = useState({})
+  useEffect(() => {
+    const initOrderItem = { name: props.item.name }
+    buildOrderItem(initOrderItem)
+  }, [props.item.name])
   const handleSelect1 = (e) => {
     setVariety1(e.target.value)
   }
@@ -42,6 +48,23 @@ const PlatterSelect = (props) => {
 
   const handleSelect5 = (e) => {
     setVariety5(e.target.value)
+  }
+  const onClick = (e) => {
+    e.preventDefault()
+
+    const newOrderItem = Object.assign(orderItem, {
+      size: props.item.size ? props.item.size : 'N/A',
+      quantity: props.quantity,
+      price: props.item.price,
+      variety: [variety1, variety2, variety3, variety4, variety5],
+    })
+
+    buildOrderItem(newOrderItem)
+
+    const updatedOrder = props.order.slice()
+
+    updatedOrder.push(newOrderItem)
+    props.addToOrder(updatedOrder)
   }
 
   // local state needs to 'build' a hero
@@ -171,7 +194,7 @@ const PlatterSelect = (props) => {
             </DropdownContainer>
           </SelectFormBox>
         </SelectStack>
-        <AddToOrderButton>+</AddToOrderButton>
+        <AddToOrderButton onClick={(e) => onClick(e)}>+</AddToOrderButton>
       </FormBox>
     </PlatterBox>
   )

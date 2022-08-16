@@ -36,16 +36,17 @@ export const OptionsList = styled(List)`
 `
 
 export const SandwichListItem = styled(ListItem)`
-  border-top: 1px black dotted;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  padding: 0px;
-  margin: 0px;
-  line-height: 10px;
-  text-transform: uppercase;
-  max-height: calc((100% -50px) / 8);
-`
+         border-top: 1px black dotted;
+         text-align: center;
+         display: flex;
+         flex-direction: column;
+         padding: 0px;
+         margin: 0px;
+         line-height: 10px;
+         text-transform: uppercase;
+         max-height: calc((100% -50px) / 8);
+         font-family: 'Courier';
+       `
 
 export const ListTitle = styled(ListSubheader)`
   padding: 0px;
@@ -57,13 +58,12 @@ export const ListTitle = styled(ListSubheader)`
   letter-spacing: 1px;
 `
 export const SandwichTextTitle = styled(ListItemText)`
-  .css-10hburv-MuiTypography-root {
-    font-family: 'Courier';
-    font-weight: bold;
-    padding: 0px;
-    line-height: 10px;
-  }
-`
+         .css-10hburv-MuiTypography-root {
+           font-weight: bold;
+           padding: 0px;
+           line-height: 10px;
+         }
+       `
 export const SandwichTextDescription = styled(ListItemText)`
   .css-83ijpv-MuiTypography-root {
     font-family: 'Courier';

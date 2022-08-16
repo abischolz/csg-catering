@@ -1,4 +1,4 @@
-import { Box, Button, Paper, ToggleButtonGroup } from '@mui/material'
+import { Box, Button, ToggleButtonGroup, Alert } from '@mui/material'
 import styled, { css } from '@emotion/styled'
 
 export const OptionBox = styled(Box)`
@@ -41,3 +41,5 @@ export const SizeGroup = styled(ToggleButtonGroup)`
     font-size: 0.8rem;
   }
 `
+
+export const NoSizeAlert = styled(Alert)``
