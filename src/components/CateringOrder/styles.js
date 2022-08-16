@@ -10,23 +10,29 @@ import {
 } from '@mui/material'
 
 export const FormBox = styled(Box)`
-  font-family: 'Courier';
-  width: 50%;
-  text-align: left;
+  .MuiBox-root {
+    font-family: 'Courier';
+    width: 100%;
+    text-align: left;
+  }
 `
 
 export const AccordionContent = styled(AccordionDetails)`
-  display: flex;
+  .MuiAccordionDetails-root {
+    display: flex;
+    flex-direction: row;
+  }
 `
 export const TextInput = styled(TextField)`
-  width: 75%;
-  label {
+  width: 100%;
+  label,
+  input {
     font-family: 'Courier';
   }
 `
 
 export const TableBox = styled(TableContainer)`
-  width: 50%;
+  width: 100%;
 `
 
 export const OrderTable = styled(Table)`

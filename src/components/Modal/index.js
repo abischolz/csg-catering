@@ -17,7 +17,6 @@ import PlatterModal from './PlatterModal'
 const DefaultModal = (props) => {
   //modal state
 
-  console.log('props.item.name', props)
   const [open, setOpen] = useState(false)
 
   //dropdown state
@@ -53,11 +52,18 @@ const DefaultModal = (props) => {
               )
             })}
           </OptionsList>
-          {() => console.log(props.item.name === 'PLATTERS')}
           {props.item.name === 'HEROES' ? (
-            <HeroModal buildItem={buildItem} {...props} />
+            <HeroModal
+              order={props.order}
+              setOrder={props.setOrder}
+              {...props}
+            />
           ) : (
-            <PlatterModal buildItem={buildItem} {...props} />
+            <PlatterModal
+              order={props.order}
+              setOrder={props.setOrder}
+              {...props}
+            />
           )}
         </ModalBox>
       </Modal>
