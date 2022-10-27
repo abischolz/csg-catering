@@ -4,9 +4,10 @@ import {
   AccordionDetails,
   TextField,
   TableContainer,
-  TableHead,
+  Select,
   Table,
   FormLabel,
+  Button
 } from '@mui/material'
 
 export const FormBox = styled(Box)`
@@ -37,6 +38,8 @@ export const TableBox = styled(TableContainer)`
 
 export const OrderTable = styled(Table)`
   font-family: 'Courier';
+  border: 1px dotted black;
+
 
   .MuiTableHead-root {
     font-weight: bold;
@@ -51,4 +54,29 @@ export const OrderFormGroup = styled(FormLabel)`
   .MuiTypography-root {
     font-family: 'Courier';
   }
+`
+export const OrderRequestButton = styled(Button)`
+	font-family: inherit; 
+	letter-spacing: 1px; 
+	font-weight: 500; 
+	border: 2px dotted black;
+	color: black;
+	width: fit-content;
+	padding: 10px 10px;
+	margin-top: 20px;
+
+	:hover {
+		background-color: #eeeeee;
+	}
+`
+export const DateField = styled(TextInput)`
+	font-family: inherit; 
+	
+	fieldset {
+		border: 1px dotted black;
+	}
+`
+
+export const AllergySelect = styled(Select)`
+	font-family: inherit;
 `

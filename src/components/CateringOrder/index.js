@@ -12,8 +12,20 @@ import {
   FormGroup,
   AccordionSummary,
   AccordionDetails,
-} from '@mui/material'
+  Button,
+  Grid,
+  MenuItem,
+  OutlinedInput,
+  Chip, 
+	Box,
+} from '@mui/material';
+import {Redirect} from 'react-router-dom'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import ExpandMore from '@mui/icons-material/ExpandMore'
+
+
 
 import {
   AccordionContent,
@@ -23,40 +35,78 @@ import {
   OrderTable,
   HeaderRow,
   OrderFormGroup,
-} from './styles'
-import { MenuAccordion } from '../Meal/styles'
+	OrderRequestButton,
+	DateField,
+	AllergySelect,
+} from './styles';
+import { MenuAccordion } from '../Meal/styles';
 
 const Order = (props) => {
-  const [open, setOpen] = useState(true)
+	const [open, setOpen] = useState(true);
 
-  const [name, setName] = useState('')
-  const [address, setAddress] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
-  const [time, setTime] = useState('')
-  const [date, setDate] = useState(new Date())
-  const [delivery, setDelivery] = useState(false)
+	const startingInfo = localStorage.getItem('info')
+		? JSON.parse(localStorage.getItem('info'))
+		: {
+				name: '',
+				address: 'N/A',
+				email: '',
+				phone: '',
+				date: null,
+				time: '',
+				delivery: false,
+				allergies: [],
+		  };
+	//form information
+	const [info, setInfo] = useState(startingInfo);
 
-  useEffect(() => {}, [props.order.length])
-  /*
-    initial state 
+	useEffect(() => {
+		localStorage.setItem('info', JSON.stringify(info));
+	}, [info]);
 
-    should initialize a table with columns: 
-      size + item name/ variety / qty / price (total)
-      "3 ft Hero "  / 
-      'Small Salad'
+	const allergyList = [
+		'Milk',
+		'Peanut',
+		'Eggs',
+		'Soy',
+		'Wheat',
+		'Sesame',
+		'Shellfish',
+		'Tree Nut',
+		'Fish',
+		'Other',
+	];
 
-      should include total and calculate gratuity 
 
-    */
-  console.log(props)
+	const handleFormChange = (e) => {
+		setInfo((info) => ({
+			...info,
+			[e.target.name]: e.target.value,
+		}));
+	};
+
+	const sendOrderRequest = async (order) => {
+		try {
+			let orderRequest = Object.assign({}, info);
+			orderRequest.order = order;
+			orderRequest = JSON.stringify(orderRequest);
+			fetch(process.env.REACT_APP_ZAP_ENDPOINT, {
+				method: 'POST',
+				body: orderRequest,
+			}).then((res) =>{ 
+				alert('this is a placeholder - Request Sent!')
+				console.log(res)});
+		} catch (err) {
+			console.log('SOMETHING WENT WRONG', err);
+		}
+	};
+
   return (
     <MenuAccordion
       id='catering-order-form'
       expanded={open}
       name='catering-order-accordion'
       defaultExpanded={true}
-      onChange={(e) => setOpen(e.target.value)}
+			onChange={(e) => setOpen((open) => !open)}
     >
       <AccordionSummary
         id={props.id}
@@ -78,105 +128,174 @@ const Order = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.order.length ? (
+							{props.order && props.order.length ? (
                 props.order.map((orderItem, idx) => {
                   return (
+										<>
                     <TableRow key={idx}>
                       {orderItem.size === 'N/A' ? (
                         <TableCell>{orderItem.name}</TableCell>
                       ) : (
                         <TableCell>
-                          {orderItem.size} {orderItem.name}{' '}
+														{orderItem.size} {orderItem.name}
                         </TableCell>
                       )}
-                      <TableCell>{orderItem.variety}</TableCell>
+												<TableCell>
+													{orderItem.variety.length > 0
+														? orderItem.variety.join(', ')
+														: orderItem.variety}
+												</TableCell>
                       <TableCell>{orderItem.quantity}</TableCell>
+												<TableCell>
+													${orderItem.price * orderItem.quantity}
+												</TableCell>
                     </TableRow>
-                  )
+										</>
+									);
                 })
               ) : (
                 <TableRow>
                   <TableCell>Nothing to see yet</TableCell>
                 </TableRow>
               )}
+							<TableRow>
+								<TableCell />
+								<TableCell />
+								<TableCell>SUGGESTED GRATUITY</TableCell>
+								<TableCell>
+									$
+									{props.order.reduce((orderTotal, orderItem) => {
+										return (orderTotal += orderItem.price * orderItem.quantity);
+									}, 0) * 0.22}
+								</TableCell>
+							</TableRow>
+							<TableRow>
+								<TableCell />
+								<TableCell />
+								<TableCell>TOTAL</TableCell>
+								<TableCell>
+									$
+									{props.order.reduce((orderTotal, orderItem) => {
+										return (orderTotal += orderItem.price * orderItem.quantity);
+									}, 0) +
+										props.order.reduce((orderTotal, orderItem) => {
+											return (orderTotal +=
+												orderItem.price * orderItem.quantity);
+										}, 0) *
+											0.22}
+								</TableCell>
+							</TableRow>
             </TableBody>
           </OrderTable>
         </TableBox>
         <FormBox noValidate autoComplete='off'>
+					<Grid container spacing={1}>
+						<Grid item xs={6}>
           <TextInput
             label='Name'
             variant='standard'
             name='name'
-            value={name}
+								value={info.name}
             id='name-field'
-            onChange={(e) => setName(e.target.value)}
+								onChange={(e) => handleFormChange(e)}
           />
+						</Grid>
 
-          <br />
+						<Grid item xs={6}>
           <TextInput
             name='email'
             label='Email'
             variant='standard'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+								value={info.email}
+								onChange={handleFormChange}
             id='email-field'
           />
-          <br />
+						</Grid>
+
+						<Grid item xs={6}>
           <TextInput
             name='phone'
             label='Phone'
             variant='standard'
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+								value={info.phone}
+								onChange={handleFormChange}
             id='phone-number-field'
           />
+						</Grid>
 
-          <br />
-          <TextInput
-            name='date'
-            label='Date of Event'
-            variant='standard'
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            id='event-date-field'
+						<Grid item xs={5}>
+							<LocalizationProvider dateAdapter={AdapterDayjs}>
+								<DatePicker
+									label='Requested Date'
+									value={info.date}
+									onChange={(date) => setInfo({ ...info, date: date })}
+									renderInput={(params) => <DateField {...params} />}
           />
-          <br />
+							</LocalizationProvider>
+						</Grid>
+						<Grid item xs={3}>
           <TextInput
             name='time'
             label='Time of Event'
             variant='standard'
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
+								value={info.time}
+								onChange={handleFormChange}
             id='event-time-field'
           />
-          <br />
+						</Grid>
+						<Grid item xs={4}>
           <OrderFormGroup>
             <FormControlLabel
-              onChange={(e) => setDelivery((delivery) => !delivery)}
+									onChange={handleFormChange}
               control={<Checkbox />}
               label='Delivery?'
             />
           </OrderFormGroup>
-          {delivery && (
+						</Grid>
+						{info.delivery && (
+							<Grid item xs={4}>
             <TextInput
               id='delivery-address'
-              onChange={(e) => setAddress(e.target.value)}
-              value={address}
+									onChange={handleFormChange}
+									value={info.address}
               label='Delivery Address'
               name='address'
               variant='standard'
             />
+							</Grid>
           )}
-          {/* 
-          inputs: Name, Email, Phone (Contact info)
-          inputs: Date of event, Time of event, Delivery/Pickup (If delivery - address)
-
-
-        */}
+						<Grid item xs={7}>
+							<AllergySelect
+								name='allergies'
+								id='allergy-select'
+								multiple
+								value={info.allergies}
+								onChange={handleFormChange}
+								input={<OutlinedInput id='allergy-select-chip' label='Chip' />}
+								renderValue={(selected) => (
+									<Box>
+										{selected.map((value, idx) => (
+											<Chip key={idx} label={value} />
+										))}
+									</Box>
+								)}
+							>
+								{allergyList.map((allergy, idx) => (
+									<MenuItem key={idx} value={allergy}>
+										{allergy}
+									</MenuItem>
+								))}
+							</AllergySelect>
+						</Grid>
+					</Grid>
         </FormBox>
+
+				<OrderRequestButton onClick={() => sendOrderRequest(props.order)}>
+					Submit your order request
+				</OrderRequestButton>
       </AccordionContent>
     </MenuAccordion>
-  )
-}
+	);
+};
 
-export default Order
+export default Order;

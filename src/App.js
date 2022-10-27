@@ -7,32 +7,15 @@ import { menu } from './constants'
 
 function App(props) {
   //
-  const [order, setOrder] = useState([])
+  const startingOrder = JSON.parse(localStorage.getItem('order')) ? JSON.parse(localStorage.getItem('order')) : [];
 
-  /*
-  methods -
-  1. add item to cart (this needs to be global)
-    these methods need to be in App and passed down as appropriate 
-  2. build item (platters/heroes) -> this can be local 
-    they should send the built item to the order 
+  const [order, setOrder] = useState(startingOrder);
 
-  */
-
-  /*
-  order: [
-    {
-      name: itemName, 
-      size: size || n/a, 
-      variety: [],
-      qty: qty, 
-      price: here - put price of single item 
+  useEffect(() => {
+		localStorage.setItem('order', JSON.stringify(order));
+	}, [order]);
 
 
-    }
-
-  ]
-
-  */
   return (
     <AppContainer className='App'>
       <h1>Catering Menu</h1>

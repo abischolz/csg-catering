@@ -42,13 +42,22 @@ export const lunchSections = [
     name: 'Sandwiches',
     show: true,
     items: [
-      { name: 'HEROES', description: "WHEN EVERYONE'S NOSHING." },
-      { name: 'PLATTER', description: 'WHEN EVERYONE WANTS THEIR OWN.' },
+							{
+								name: 'HEROES',
+								description: "WHEN EVERYONE'S NOSHING.",
+								price: { 3: 115, 4: 145, 6: 200 },
+							},
+							{
+								name: 'PLATTER',
+								description: 'WHEN EVERYONE WANTS THEIR OWN.',
+								price: 195,
+							},
     ],
     sandwiches: [
       {
         name: 'Droopy',
-        description: 'ROAST BEEF, ARUGULA, CRISPY ONIONS, HORSERADISH MAYO',
+								description:
+									'ROAST BEEF, ARUGULA, CRISPY ONIONS, HORSERADISH MAYO',
       },
       {
         name: 'Italian Combo',
@@ -145,6 +154,11 @@ export const lunchSections = [
         name: 'COLESLAW',
         description:
           ' RED & GREEN CABBAGE, CARROT, RED ONION, CSG SLAW DRESSING*',
+								price: {
+									Small: 35,
+									Medium: 55,
+									Large: 80,
+								},
       },
     ],
   },
@@ -168,7 +182,7 @@ export const lunchSections = [
   },
 ]
 
-export const heroOptions = [3, 4, 5, 6]
+export const heroOptions = [3, 4, 6]
 
 export const lunchSandwiches = [
   {
