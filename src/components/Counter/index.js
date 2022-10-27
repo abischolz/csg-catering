@@ -5,35 +5,48 @@ import {
   QuantityCount,
   OptionBox,
   SizeGroup,
+	PriceBox,
 } from './styles'
 
 import { LengthButton } from '../Modal/HeroModal/styles'
 
-const Counter = (props) => {
+const Counter = ({
+	section,
+	size,
+	setSize,
+	quantity,
+	setQuantity,
+	price,
+	setPrice,
+	item,
+	...props
+}) => {
   const onClickAdd = () => {
-    const newCount = props.quantity + 1
-    props.setQuantity(newCount)
+		const newCount = quantity + 1
+		setQuantity(newCount)
   }
 
   const onClickReduce = () => {
-    if (props.quantity > 0) {
-      const newCount = props.quantity + 1
-      props.setQuantity(newCount)
+		if (quantity > 0) {
+			const newCount = quantity - 1
+			setQuantity(newCount)
     }
   }
 
   const handleChange = (e) => {
     e.preventDefault()
-    if (props.quantity && e.target.value !== props.size) {
-      props.setQuantity(0)
+		if (quantity && e.target.value !== size) {
+			setQuantity(0)
     }
-    props.setSize(e.target.value)
+		setSize(e.target.value)
+		setPrice(item.price[e.target.value])
   }
   return (
     <OptionBox>
-      {props.section === 'Salads' && (
+			{section === 'Salads' && (
+				<>
         <SizeGroup
-          value={props.size}
+						value={size}
           aria-labelledby='salad-size'
           exclusive
           onChange={handleChange}
@@ -49,15 +62,21 @@ const Counter = (props) => {
             LARGE
           </LengthButton>
         </SizeGroup>
+				</>
       )}
       <CounterBox>
         <QtyButton onClick={onClickReduce}>-</QtyButton>
         <QuantityCount>
-          <p>{props.quantity}</p>
+					<p>{quantity}</p>
         </QuantityCount>
 
         <QtyButton onClick={onClickAdd}>+</QtyButton>
       </CounterBox>
+			{!size && section !== 'Salads' && item.name !== 'HEROES' ? (
+				<PriceBox>${item.price}</PriceBox>
+			) : (
+				<PriceBox>${price}</PriceBox>
+			)}
     </OptionBox>
   )
 }

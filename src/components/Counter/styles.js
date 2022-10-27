@@ -32,6 +32,7 @@ export const QuantityCount = styled.div`
   min-width: 20px;
   margin: 0px 10px;
   flex-grow: 2;
+	text-align: center;
 `
 
 export const SizeGroup = styled(ToggleButtonGroup)`
@@ -42,4 +43,10 @@ export const SizeGroup = styled(ToggleButtonGroup)`
   }
 `
 
+export const PriceBox = styled(Box)`
+	font-family: inherit;
+	position: relative;
+	margin: 0px auto 10px auto;
+	text-align: center;
+`
 export const NoSizeAlert = styled(Alert)``
