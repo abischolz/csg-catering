@@ -54,14 +54,15 @@ export const ListTitle = styled(ListSubheader)`
   text-align: center;
   max-height: 50px;
   line-height: 10px;
-  font-family: 'Courier';
+  font-family: inherit;
   letter-spacing: 1px;
 `
 export const SandwichTextTitle = styled(ListItemText)`
-         .css-10hburv-MuiTypography-root {
+         .MuiTypography-root {
            font-weight: bold;
            padding: 0px;
            line-height: 10px;
+           font-family: inherit;
          }
        `
 export const SandwichTextDescription = styled(ListItemText)`

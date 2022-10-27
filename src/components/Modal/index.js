@@ -21,8 +21,6 @@ const DefaultModal = (props) => {
 
   //dropdown state
 
-  const [item, buildItem] = useState({})
-
   //modal and select controls
   const handleOpen = () => {
     setOpen(true)
@@ -56,12 +54,16 @@ const DefaultModal = (props) => {
             <HeroModal
               order={props.order}
               setOrder={props.setOrder}
+							open={open}
+							setOpen={setOpen}
               {...props}
             />
           ) : (
             <PlatterModal
               order={props.order}
               setOrder={props.setOrder}
+							open={open}
+							setOpen={setOpen}
               {...props}
             />
           )}
