@@ -7,7 +7,7 @@ import {
 } from './styles'
 import Counter from '../Counter'
 import DefaultModal from '../Modal'
-import { Alert } from '@mui/material'
+import { Alert, Snackbar } from '@mui/material'
 
 const SandwichCard = (props) => {
                                   const { item, order, setOrder } = props
@@ -15,9 +15,15 @@ const SandwichCard = (props) => {
                                   const [quantity, setQuantity] = useState(0)
                                   const [size, setSize] = useState('')
                                   const [orderItem, setOrderItem] = useState({})
+	const [price, setPrice] = useState('')
+	//error handling
                                   const [open, setOpen] = useState(false)
+	const [alert, setAlert] = useState('')
 
                                   useEffect(() => {
+		if (typeof item.price === 'number') {
+			setPrice(item.price)
+		}
                                     setOrderItem({
                                       ...orderItem,
                                       name: props.section.name,
@@ -26,29 +32,36 @@ const SandwichCard = (props) => {
 
                                   const onClick = (e) => {
                                     e.preventDefault()
-                                    console.log('size', size)
-                                    console.log('quantity', quantity)
-                                    console.log(item.name)
+		
                                     if (quantity < 1) {
-                                      return <Alert>is this right?</Alert>
+			setAlert(`Please add at least one ${item.name} first.`)
+			setOpen((open) => !open)
+			return
                                     }
-                                    const newOrderItem = Object.assign(
-                                      orderItem,
-                                      {
+		const newOrderItem = Object.assign(orderItem, {
                                         size: size.length ? size : 'N/A',
                                         quantity: quantity,
-                                        price: item.price,
+			price: price,
                                         variety: [item.name],
-                                      },
-                                    )
+		})
 
                                     setOrderItem(newOrderItem)
 
                                     const updatedOrder = props.order.slice()
 
                                     updatedOrder.push(newOrderItem)
-                                    props.addToOrder(updatedOrder)
+
+		props.addToOrder(updatedOrder);
                                   }
+
+	const handleCloseAlert = (event, reason) => {
+		if (reason === 'clickaway') {
+			return
+		}
+
+		setOpen(false)
+	}
+
                                   return (
                                     <ItemCard sx={{ boxShadow: 1 }}>
                                       <ItemContent>
@@ -57,13 +70,8 @@ const SandwichCard = (props) => {
                                         {/* <p>{item.price}</p> */}
                                       </ItemContent>
                                       <ActionContainer>
-                                        {item.name === 'HEROES' ||
-                                        item.name === 'PLATTER' ? (
-                                          <DefaultModal
-                                            order={order}
-                                            setOrder={setOrder}
-                                            {...props}
-                                          />
+				{item.name === 'HEROES' || item.name === 'PLATTER' ? (
+					<DefaultModal order={order} setOrder={setOrder} {...props} />
                                         ) : (
                                           <>
                                             <Counter
@@ -72,14 +80,20 @@ const SandwichCard = (props) => {
                                               setSize={setSize}
                                               quantity={quantity}
                                               setQuantity={setQuantity}
+							price={price}
+							setPrice={setPrice}
+							item={item}
                                             />
-                                            <AddToOrderButton
-                                              onClick={(e) => onClick(e)}
-                                            >
+						<AddToOrderButton onClick={(e) => onClick(e)}>
                                               ADD TO ORDER
                                             </AddToOrderButton>
                                           </>
                                         )}
+				<Snackbar open={open} onClose={(e) => handleCloseAlert(e)}>
+					<Alert onClose={(e) => handleCloseAlert(e)} severity='error'>
+						{alert}
+					</Alert>
+				</Snackbar>
                                       </ActionContainer>
                                     </ItemCard>
                                   )

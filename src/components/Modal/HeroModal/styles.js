@@ -127,3 +127,7 @@ export const AddToOrderButton = styled(Button)`
   color: black;
   width: 150px;
 `
+export const ActionBox = styled(Box)`
+  display: flex; 
+
+`

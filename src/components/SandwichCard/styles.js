@@ -40,4 +40,8 @@ export const AddToOrderButton = styled(Button)`
   border: 1px dotted black;
   color: black;
   width: 150px;
+
+  :hover {
+		background-color: #eeeeee;
+	}
 `
